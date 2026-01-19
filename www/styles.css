@@ -1,0 +1,63 @@
+/* --- Page width like a real site --- */
+.container, .container-fluid, main .container, main .container-fluid {
+  max-width: 1120px !important;
+}
+
+/* --- Typography --- */
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  line-height: 1.65;
+  background: #ffffff;
+  color: #1b1f24;
+}
+
+/* --- Navbar like a clean website header --- */
+.navbar {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e9ecef !important;
+}
+.navbar .navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+/* --- Cards: subtle border + shadow --- */
+.card {
+  border-radius: 14px !important;
+  border: 1px solid #e9ecef !important;
+  box-shadow: 0 1px 10px rgba(0,0,0,0.05);
+}
+.card-body { padding: 1rem 1.1rem; }
+
+/* --- Home layout helpers --- */
+.page-wrap { margin: 0 auto; padding-top: 0.5rem; padding-bottom: 2rem; }
+
+.hero-card { padding: 1.2rem 1.2rem; }
+.hero-title { font-size: 1.6rem; font-weight: 800; margin-bottom: .35rem; }
+.hero-lead { color: #4b5563; margin-bottom: .75rem; }
+
+/* --- Teaser blocks (ACTUEEL/UITGELICHT/INTERVIEW style) --- */
+.teaser-kicker {
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  font-size: .78rem;
+  color: #0b5ed7; /* blue accent */
+  margin-bottom: .35rem;
+}
+.teaser-title {
+  font-weight: 800;
+  font-size: 1.05rem;
+  margin-bottom: .35rem;
+}
+.teaser-body { color: #4b5563; }
+
+.meta { color: #6b7280; font-size: .92rem; }
+
+/* Buttons a bit more “site-like” */
+.btn { border-radius: 12px !important; }
+.btn-primary { font-weight: 700; }
+
+/* Results */
+.result-card { margin-bottom: 1rem; }
+

@@ -1,0 +1,4 @@
+query,matched_doc_id,used_synonym,hl_level
+spierziekte,ziekte_001,neuromusculaire aandoening,low
+dna test,dna_001,genetisch onderzoek,mid
+drager,kw_001,,low
