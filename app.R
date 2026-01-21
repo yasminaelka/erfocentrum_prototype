@@ -217,10 +217,18 @@ next_question_for_prompt <- function(prompt) {
 # =========================
 ui <- page_navbar(
   id = "topnav",  # <<<<<< IMPORTANT for updateNavbarPage
+  selected = "home",
   title = "Erfocentrum (Prototype)",
   theme = bs_theme(version = 5),
   header = tags$head(
-    tags$link(rel = "stylesheet", type = "text/css", href = "styles.css")
+    tags$link(rel = "stylesheet", type = "text/css", href = "styles.css"),
+    tags$style(HTML("
+  /* Hide the 'Voorpagina' tab in navbar but keep it as a route */
+  .navbar-nav .nav-link[href*='home'] {
+    display: none !important;
+  }
+"))
+    
   ),
   
   nav_menu("DNA-onderzoek", nav_panel("Zoeken", value = "search")),
@@ -229,22 +237,61 @@ ui <- page_navbar(
   nav_menu("Familie of niet", nav_panel("Zoeken", value = "search")),
   
   nav_panel(
-    "Voorpagina",
+    title = NULL,
     value = "home",
+    
     div(
-      class = "page-wrap",
-      card(
-        class = "hero-card",
-        h2("Erfelijkheid gaat over iedereen. Ook over jou."),
-        p("Prototype met verbeterde zoekfunctie (concepten, synoniemen, spelling, suggesties) en weergaveniveaus Basis/Standaard/Uitgebreid."),
-        actionButton("go_search", "Ga naar Zoeken", class = "btn-primary")
+      class = "erfo-home",
+      
+      div(class = "erfo-topbar",
+          div(class = "erfo-logo",
+              tags$img(src = "erfo_logo.png", height = "44px")
+          ),
+          div(class = "erfo-search",
+              textInput("home_search", NULL,
+                        placeholder = "Zoek op een ziekte of ander onderwerp"),
+              actionButton("home_search_go", "Zoek",
+                           class = "btn-erfo-search")
+          ),
+          div(class = "erfo-help",
+              actionButton("mail_erfolijn",
+                           "Vragen? Mail de Erfolijn",
+                           class = "btn-erfo-help")
+          )
       ),
+      
+      div(class = "erfo-hero",
+          div(class = "erfo-hero-left",
+              div(class = "pill", "ACTUEEL"),
+              h2("Met trots presenteren we het Meerjarenplan Erfocentrum 2026–2028: Bij de tijd")
+          ),
+          div(class = "erfo-hero-right",
+              div(class = "pill", "UITGELICHT"),
+              h3("Zijn kuiltjes in je wangen erfelijk?")
+          )
+      ),
+      
+      div(class = "erfo-quick",
+          actionButton("go_search",
+                       "Ga naar Zoeken",
+                       class = "btn-primary")
+      ),
+      
       br(),
       layout_columns(
         col_widths = c(4, 4, 4),
         uiOutput("home_col1"),
         uiOutput("home_col2"),
         uiOutput("home_col3")
+      ),
+      
+      div(class = "erfo-footer",
+          div(class = "footer-links",
+              tags$a("Over ons", href = "#"),
+              tags$a("Tip of klacht", href = "#"),
+              tags$a("Colofon", href = "#"),
+              tags$a("Sitemap", href = "#")
+          )
       )
     )
   ),
@@ -269,9 +316,11 @@ ui <- page_navbar(
           multiple = FALSE,
           options = list(
             placeholder = "Bijv. ‘spierziekte’, ‘drager’, ‘DNA-onderzoek’",
-            create = TRUE
+            create = TRUE,
+            openOnFocus = FALSE
           )
-        ),
+        )
+        ,
         
         selectInput(
           "situation",
@@ -290,7 +339,6 @@ ui <- page_navbar(
         checkboxInput("use_aliases", "Zoek ook in aliassen", value = TRUE),
         
         uiOutput("syn_hint"),
-        uiOutput("spell_hint"),
         
         tags$hr(),
         
@@ -317,6 +365,7 @@ ui <- page_navbar(
       card(
         h3("Resultaten"),
         uiOutput("results_count"),
+        uiOutput("spell_hint_results"),
         uiOutput("results_list")
       )
     )
@@ -382,12 +431,23 @@ server <- function(input, output, session) {
     updateNavbarPage(session, id = "topnav", selected = "search")
   })
   
-  observe({
-    vocab <- unique(c(content_ui$title, content_ui$aliases, content_ui$category))
+  session$onFlushed(function() {
+    
+    # Maak nette vocab: titles + category + losse alias-termen (gesplitst)
+    alias_terms <- content_ui$aliases %||% ""
+    alias_terms <- alias_terms[nzchar(alias_terms)]
+    alias_terms <- unlist(str_split(alias_terms, "\\s*[\\|,;]\\s*"))
+    alias_terms <- trimws(alias_terms)
+    alias_terms <- alias_terms[nzchar(alias_terms)]
+    
+    vocab <- unique(c(content_ui$title, content_ui$category, alias_terms))
     vocab <- vocab[!is.na(vocab) & nzchar(vocab)]
     vocab <- sort(unique(trimws(vocab)))
-    updateSelectizeInput(session, "q", choices = vocab, server = TRUE)
-  })
+    
+    updateSelectizeInput(session, "q", choices = vocab, selected = "", server = TRUE)
+    
+  }, once = TRUE)
+  
   
   observeEvent(input$situation, {
     if (!nzchar(input$situation)) return()
@@ -728,6 +788,37 @@ server <- function(input, output, session) {
   observeEvent(input$back_to_search, {
     updateNavbarPage(session, id = "topnav", selected = "search")
   })
+  output$spell_hint_results <- renderUI({
+    q_raw <- input$q %||% ""
+    q_raw <- str_trim(as.character(q_raw))
+    if (!nzchar(q_raw)) return(NULL)
+    
+    vocab <- unique(c(content_ui$title, content_ui$category, unlist(str_split(content_ui$aliases %||% "", "\\s*[\\|,;]\\s*"))))
+    vocab <- vocab[!is.na(vocab) & nzchar(vocab)]
+    
+    m <- best_spelling_match(q_raw, vocab, max_dist = 2)
+    if (is.na(m) || tolower(m) == tolower(q_raw)) return(NULL)
+    
+    # Alleen tonen als er weinig/geen hits zijn (optioneel maar netjes)
+    # df <- filtered()
+    # if (nrow(df) > 0) return(NULL)
+    
+    div(
+      class = "meta",
+      "Bedoelde je misschien: ",
+      actionLink("apply_spell", m),
+      "?"
+    )
+  })
+  
+  observeEvent(input$apply_spell, {
+    # Zet de correcte term in zoekveld en trigger zoeken
+    updateSelectizeInput(session, "q", selected = isolate(best_spelling_match(
+      str_trim(as.character(input$q %||% "")),
+      unique(c(content_ui$title, content_ui$category, unlist(str_split(content_ui$aliases %||% "", "\\s*[\\|,;]\\s*")))),
+      max_dist = 2
+    )))
+  }, ignoreInit = TRUE)
 }
 
 shinyApp(ui, server)
