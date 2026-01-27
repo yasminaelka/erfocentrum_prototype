@@ -15,6 +15,47 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 DATA_DIR = Path("data")
 APP_DIR = Path(__file__).parent
 
+
+# -------------------------
+# FICTIEVE HOMEPAGE DATA
+# -------------------------
+
+FAKE_FEATURED = [
+    {
+        "title": "Is MS erfelijk?",
+        "tag": "UITGELICHT",
+        "query": "multiple sclerose erfelijk"
+    },
+    {
+        "title": "Wat betekent een DNA-uitslag?",
+        "tag": "ACTUEEL",
+        "query": "dna uitslag uitleg"
+    }
+]
+
+HOME_TOPIC_BLOCKS = [
+    {
+        "label": "VERZEKERING & MAATSCHAPPELIJK",
+        "title": "Verzekering, werk en erfelijke aandoeningen",
+        "query": "verzekering en erfelijke aandoening",
+    },
+    {
+        "label": "ERFELIJKHEID VAN KANKER",
+        "title": "Wanneer is kanker erfelijk?",
+        "query": "erfelijkheid van kanker",
+    },
+    {
+        "label": "AANLEG & ONTWIKKELING",
+        "title": "Wat betekent genetische aanleg?",
+        "query": "genetische aanleg betekenis",
+    },
+    {
+        "label": "NIEUWE TECHNIEKEN",
+        "title": "Nieuwe DNA-technieken uitgelegd",
+        "query": "nieuwe dna technieken",
+    },
+]
+
 # -------------------------
 # Helpers
 # -------------------------
@@ -424,7 +465,14 @@ def server(input, output, session):
             {"class": "erfo-wrap"},
             ui.div(
                 {"class": "erfo-topbar"},
-                ui.div({"class": "erfo-logo"}, ui.img(src="erfo_logo.png", height="44px")),
+                ui.div(
+                    {"class": "erfo-logo"},
+                    ui.tags.a(
+                        ui.img(src="erfo_logo.png", height="44px"),
+                        href="#",
+                        onclick="erfoSetInput('go_home', Date.now()); return false;",
+                    ),
+                ),
                 ui.div(
                     {"class": "erfo-search"},
                     ui.input_selectize(
@@ -478,7 +526,14 @@ def server(input, output, session):
             {"class": "erfo-wrap"},
             ui.div(
                 {"class": "erfo-topbar"},
-                ui.div({"class": "erfo-logo"}, ui.img(src="erfo_logo.png", height="44px")),
+                ui.div(
+                    {"class": "erfo-logo"},
+                    ui.tags.a(
+                        ui.img(src="erfo_logo.png", height="44px"),
+                        href="#",
+                        onclick="erfoSetInput('go_home', Date.now()); return false;",
+                    ),
+                ),
                 ui.div(
                     {"class": "erfo-search"},
                     ui.input_selectize(
@@ -536,7 +591,43 @@ def server(input, output, session):
     @reactive.event(input["back_to_search"])
     def _back_to_search():
         current_page.set("search")
+    
+    @reactive.effect
+    @reactive.event(input["go_home"])
+    def _go_home():
+        # ga terug naar zoek/home view
+        current_page.set("search")
+        selected_id.set(None)
 
+        # maak het écht 'home' (jouw home blok toont alleen als committed_q leeg is)
+        committed_q.set("")
+
+        # reset optioneel ook AI state / hints
+        llm_rank.set({"top_ids": [], "did_you_mean": None, "extra_synonyms": [], "reasoning": []})
+        bot_history.set([])
+        bot_recs.set(content_ui.iloc[0:0].copy())
+
+        # zoekveld leeg maken
+        try:
+            ui.update_selectize("q", selected="")
+        except Exception:
+              pass
+    
+    @reactive.effect
+    @reactive.event(input["home_pick"])
+    def _home_pick():
+        q = input["home_pick"]()
+        if not q:
+            return
+
+        qn = norm_text(q)
+        committed_q.set(qn)
+
+        try:
+            ui.update_selectize("q", selected=qn)
+        except Exception:
+            pass 
+    
     @reactive.effect
     def _clear_search_on_start():
         try:
@@ -949,7 +1040,7 @@ def server(input, output, session):
                 ])
             )
         return ui.card(*items)
-    
+
     @output
     @render.ui
     def home_news_block():
@@ -958,28 +1049,93 @@ def server(input, output, session):
         if q:
             return ui.HTML("")  # zodra er gezocht is: weg
 
-        return ui.div(
-            {"class": "erfo-home-hero"},
+        return ui.TagList(
+            # CATEGORIEËN als top-nav (zoals erfelijkheid.nl)
             ui.div(
-                {"class": "erfo-home-hero-card"},
+                {"class": "erfo-home-cats"},
                 ui.div(
-                    {"class": "erfo-home-hero-left"},
-                    ui.div("ACTUEEL", class_="erfo-home-pill light"),
-                    ui.div(
-                        "Met trots presenteren we het Meerjarenplan Erfocentrum 2026–2028: Bij de tijd",
-                        class_="erfo-home-title-big",
+                    {"class": "erfo-home-cats-inner"},
+                    ui.tags.a(
+                        "Erfelijk of niet",
+                        href="#",
+                        onclick="erfoSetInput('home_pick', 'erfelijk of niet'); return false;",
+                        class_="erfo-home-catlink",
                     ),
-                ),
-                ui.div(
-                    {"class": "erfo-home-hero-right"},
-                    ui.div("UITGELICHT", class_="erfo-home-pill ghost"),
-                    ui.div(
-                        "Zijn kuiltjes in je wangen erfelijk?",
-                        class_="erfo-home-title-right",
+                    ui.tags.a(
+                        "DNA-onderzoek",
+                        href="#",
+                        onclick="erfoSetInput('home_pick', 'dna onderzoek'); return false;",
+                        class_="erfo-home-catlink",
+                    ),
+                    ui.tags.a(
+                        "Ziektes (en dan?)",
+                        href="#",
+                        onclick="erfoSetInput('home_pick', 'ziekte in familie'); return false;",
+                        class_="erfo-home-catlink",
+                    ),
+                    ui.tags.a(
+                        "Kinderwens",
+                        href="#",
+                        onclick="erfoSetInput('home_pick', 'kinderwens'); return false;",
+                        class_="erfo-home-catlink",
+                    ),
+                    ui.tags.a(
+                        "Familie of niet",
+                        href="#",
+                        onclick="erfoSetInput('home_pick', 'familie'); return false;",
+                        class_="erfo-home-catlink",
                     ),
                 ),
             ),
+            
+            # HERO
+            ui.div(
+                {"class": "erfo-home-hero"},
+                ui.div(
+                    {"class": "erfo-home-hero-card"},
+                    ui.div(
+                        {"class": "erfo-home-hero-left"},
+                        ui.div("ACTUEEL", class_="erfo-home-pill light"),
+                        ui.div(
+                            "Met trots presenteren we het Meerjarenplan Erfocentrum 2026–2028: Bij de tijd",
+                            class_="erfo-home-title-big",
+                        ),
+                    ),
+                    ui.div(
+                        {"class": "erfo-home-hero-right"},
+                        ui.div("UITGELICHT", class_="erfo-home-pill ghost"),
+                        ui.div(
+                            "Zijn kuiltjes in je wangen erfelijk?",
+                            class_="erfo-home-title-right",
+                        ),
+                    ),
+                ),
+            ),
+            
+            ui.div(
+                {"class": "erfo-home-section"},
+                ui.h3("Meest gezocht"),
+            ),
+            # =========================
+            # MEEST GEZOCHT – 2x2 BLOKKEN
+            # =========================
+            ui.div(
+                {"class": "erfo-home-topic-grid"},
+                *[
+                    ui.div(
+                    {"class": "erfo-home-topic-card"},
+                    ui.div(b["label"], class_="erfo-home-pill ghost"),
+                    ui.div(
+                        b["title"],
+                        class_="erfo-home-topic-title",
+                        onclick=f"erfoSetInput('home_pick', {json.dumps(b['query'])}); return false;",
+            ),
         )
+        for b in HOME_TOPIC_BLOCKS
+    ],
+),
+          
+          )
     # -------------------------
     # AI modal
     # -------------------------

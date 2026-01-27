@@ -1,0 +1,14 @@
+.Rhistory
+*.Rproj
+.venv/
+__pycache__/
+.DS_Store
+
+cat << 'EOF' > .gitignore
+.Rhistory
+*.Rproj
+.venv/
+__pycache__/
+.DS_Store
+EOF
+

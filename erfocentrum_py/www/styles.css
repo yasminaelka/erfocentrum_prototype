@@ -99,9 +99,7 @@ h4{ font-weight: 750; }
   margin-bottom: 0;
 }
 
-.teaser-card{
-  padding: 16px;
-}
+.teaser-card{ padding: 16px; }
 
 .result-card{
   padding: 14px;
@@ -211,56 +209,76 @@ details summary{
   padding: 0 14px 34px 14px;
 }
 
+/* ✅ Dikkere witte “rand/panel” + nette schaduw */
 .erfo-topbar{
   display:flex;
   align-items:center;
   gap:16px;
-  padding:18px 10px;
+
+  padding:28px 32px;               /* dikker */
   background:#ffffff;
-  border-radius: 16px;
+  border-radius: 18px;
   margin-top: 14px;
-  border: 1px solid rgba(31,41,55,0.08);
-  box-shadow: 0 10px 24px rgba(0,0,0,0.06);
+
+  border: 2px solid rgba(31,41,55,0.10); /* dikker randje */
+  box-shadow: 0 12px 26px rgba(0,0,0,0.06);
 }
 
 .erfo-logo{ min-width: 220px; }
 
-.erfo-search{ flex:1; display:flex; gap:10px; align-items:center; }
-.erfo-search .form-control{
-  border-radius: 999px;
-  height: 44px;
-  padding-left: 18px;
+.erfo-search{
+  flex:1;
+  display:flex;
+  max-width: 720px;
+  width: 100%;
+  gap:12px;
+  align-items:center;
+}
+
+/* ✅ Selectize: juiste element stylen (niet .form-control) */
+.erfo-search .selectize-control{
+  flex: 1;
+  margin: 0;
+}
+
+.erfo-search .selectize-input{
+  height: 46px !important;
+  border-radius: 999px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 18px !important;
+}
+
+.erfo-search .selectize-input input{
+  line-height: 46px !important;
 }
 
 .btn-erfo-search{
   border-radius: 999px;
-  height: 44px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 22px !important;
 }
 
+/* Help button */
 .btn-erfo-help{
   border-radius: 999px;
-  height: 44px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+
   background: #1aa5a5;
   border: none;
   color: white;
+  padding: 0 22px;
 }
-.btn-erfo-help:hover{
-  filter: brightness(0.95);
-}
+.btn-erfo-help:hover{ filter: brightness(0.95); }
 
-.erfo-results{
-  margin: 16px 10px 0 10px;
-}
+/* Results container */
+.erfo-results{ margin: 16px 10px 0 10px; }
 
-.erfo-ai-under{
-  margin: 14px 10px 0 10px;
-  border: 1px solid rgba(0,0,0,0.08);
-  background: rgba(0,0,0,0.03);
-  border-radius: 16px;
-  padding: 12px 14px;
-}
-
-/* Results styles (already used by cards) */
+/* Results styles */
 .no-results{
   border: 1px dashed rgba(0,0,0,0.15);
   background: #fff;
@@ -304,7 +322,7 @@ details summary{
 }
 
 /* =========================
-   AI help card (groen blok) – netjes + geen rare “brede” selectors
+   AI help card (groen blok)
    ========================= */
 
 .erfo-help-card{
@@ -351,7 +369,7 @@ details summary{
 }
 
 .btn-erfo-ai{
-  height: 44px;
+  height: 46px;
   padding: 0 18px !important;
   font-weight: 900;
   border-radius: 999px !important;
@@ -362,11 +380,6 @@ details summary{
 .btn-erfo-ai:hover{
   background: #148d8d !important;
   border-color: #148d8d !important;
-}
-
-/* Ruimte tussen help-blok en resultaten */
-.erfo-results{
-  margin-top: 16px;
 }
 
 /* Mobiel: help card stapelt */
@@ -384,96 +397,72 @@ details summary{
 }
 
 /* =========================
-   Home: Actueel / Uitgelicht (extra blok)
+   Home: Category pills (boven hero, full width, kleurtjes)
    ========================= */
 
-.erfo-home-hero{
-  margin: 18px 10px 0 10px;
+.erfo-home-cats{
+  margin: 14px 10px 0 10px;
 }
 
-.erfo-home-hero-card{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-radius: 22px;
-  overflow: hidden;
-  box-shadow: 0 14px 34px rgba(31,41,55,0.10);
-  border: 1px solid rgba(31,41,55,0.08);
-  background: #fff;
-}
-
-.erfo-home-hero-left{
-  background: #59B6E6; /* blauw vlak zoals screenshot */
-  padding: 34px 34px;
+.erfo-home-cats-inner{
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  width: 100%;
+  justify-content: space-between;
+  gap: 14px;
 }
 
-.erfo-home-hero-right{
-  background: #fff;
-  padding: 34px 34px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.erfo-home-pill{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  padding: 10px 18px;
+/* elke tab */
+.erfo-home-catlink{
+  flex: 1;
+  text-align: center;
+  padding: 12px 14px;
   border-radius: 999px;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  font-size: 0.9rem;
+  font-weight: 800;
+  text-decoration: none;
+  color: #0b2239;
+  border: 1px solid rgba(0,0,0,0.10);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.04);
 }
 
-.erfo-home-pill.light{
-  background: rgba(255,255,255,0.65);
-  color: #0b1220;
+/* ✅ geen streepjes */
+.erfo-home-catlink::before{
+  content: none !important;
+  display: none !important;
 }
 
-.erfo-home-pill.ghost{
-  background: rgba(31,41,55,0.06);
-  color: #0b1220;
+.erfo-home-catlink:hover{
+  filter: brightness(0.98);
+  text-decoration: none;
 }
 
-.erfo-home-title-big{
-  font-weight: 900;
-  font-size: 2.3rem;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  color: #0b1220;
-  max-width: 18ch;
-}
+/* Kleurtjes per item (op volgorde in je UI) */
+.erfo-home-catlink:nth-child(1){ background: #E9F7F6; } /* Erfelijk of niet */
+.erfo-home-catlink:nth-child(2){ background: #EAF3FF; } /* DNA-onderzoek */
+.erfo-home-catlink:nth-child(3){ background: #FFF2E6; } /* Ziektes */
+.erfo-home-catlink:nth-child(4){ background: #F3ECFF; } /* Kinderwens */
+.erfo-home-catlink:nth-child(5){ background: #EAF9EE; } /* Familie of niet */
 
-.erfo-home-title-right{
-  font-weight: 900;
-  font-size: 2.1rem;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  color: #0b1220;
-  max-width: 18ch;
-}
-
-/* Mobile */
 @media (max-width: 900px){
-  .erfo-home-hero-card{
-    grid-template-columns: 1fr;
+  .erfo-home-cats-inner{
+    flex-wrap: wrap;
+    justify-content: flex-start;
   }
-  .erfo-home-title-big,
-  .erfo-home-title-right{
-    font-size: 1.7rem;
-    max-width: none;
+  .erfo-home-catlink{
+    flex: 1 1 calc(50% - 14px);
   }
 }
+@media (max-width: 520px){
+  .erfo-home-catlink{
+    flex: 1 1 100%;
+  }
+}
+
 /* =========================
-   Home: Actueel / Uitgelicht (extra blok)
+   Home: Actueel / Uitgelicht hero
    ========================= */
 
 .erfo-home-hero{
-  margin: 18px 10px 0 10px;
+  margin: 14px 10px 0 10px;
 }
 
 .erfo-home-hero-card{
@@ -487,7 +476,7 @@ details summary{
 }
 
 .erfo-home-hero-left{
-  background: #59B6E6;
+  background: #59B6E6; /* blauw vlak */
   padding: 34px 34px;
   display: flex;
   flex-direction: column;
@@ -551,4 +540,527 @@ details summary{
     font-size: 1.7rem;
     max-width: none;
   }
+}
+
+:root { --erfo-search-h: 48px; }
+
+/* 1) De rij zelf */
+.erfo-search{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 2) Shiny wrappers resetten (DIT is meestal de boosdoener) */
+.erfo-search > .form-group,
+.erfo-search > .shiny-input-container{
+  margin: 0 !important;
+  padding: 0 !important;
+  height: var(--erfo-search-h) !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* selectize wrapper moet flexibel zijn */
+.erfo-search > .form-group{
+  flex: 1 1 auto;
+}
+
+/* 3) Selectize: maak de box exact even hoog */
+.erfo-search .selectize-control{
+  width: 100%;
+  margin: 0 !important;
+}
+
+.erfo-search .selectize-control.single .selectize-input{
+  box-sizing: border-box !important;
+  height: var(--erfo-search-h) !important;
+  min-height: var(--erfo-search-h) !important;
+  padding: 0 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  border-radius: 24px !important;
+}
+
+.erfo-search .selectize-control.single .selectize-input:after{
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+/* 4) Knop exact even hoog (override bootstrap) */
+.erfo-search .btn-erfo-search{
+  box-sizing: border-box !important;
+  height: var(--erfo-search-h) !important;
+  min-height: var(--erfo-search-h) !important;
+  padding: 0 24px !important;
+  margin: 0 !important;
+  line-height: 1 !important;              /* belangrijk */
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 24px !important;
+}
+
+.erfo-home-chips{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.erfo-chip{
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #eef5f7;
+  text-decoration: none;
+  color: #003a4a;
+  font-weight: 500;
+}
+
+.erfo-chip:hover{
+  background: #d9eef2;
+}
+
+/* ===== MEEST GEZOCHT ALS BLOKJES ===== */
+
+.erfo-home-chips{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.erfo-chip{
+  display: block;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: #f4f8f9;
+  color: #0b2b33;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 1.3;
+
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.erfo-chip:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  background: #eef5f7;
+}
+
+/* =====================================================
+   HEADER OVERRIDES – definitieve versie
+   ===================================================== */
+
+.erfo-wrap .erfo-topbar{
+  justify-content: center;
+  gap: 20px !important;
+  padding: 18px 22px !important;
+}
+
+.erfo-wrap .erfo-logo{
+  flex: 0 0 auto;
+  min-width: 200px;
+}
+
+.erfo-wrap .erfo-search{
+  flex: 1 1 640px;
+  max-width: 640px !important;
+  width: 100%;
+}
+
+.erfo-wrap .erfo-help{
+  flex: 0 0 auto;
+  margin-left: 0 !important;
+}
+
+.erfo-wrap .erfo-help a,
+.erfo-wrap .erfo-help .btn{
+  white-space: nowrap;
+  padding: 12px 18px;
+}
+
+
+/* --- Zoekbalk + knop altijd naast elkaar --- */
+.erfo-wrap .erfo-search{
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  flex-wrap: nowrap !important;     /* <-- niet onder elkaar */
+}
+
+/* Selectize (zoekveld) neemt alle ruimte, knop blijft vaste breedte */
+.erfo-wrap .erfo-search .selectize-control{
+  flex: 1 1 auto !important;
+  min-width: 0 !important;          /* belangrijk in flex layouts */
+}
+
+.erfo-wrap .erfo-search .btn-erfo-search{
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+}
+
+.erfo-wrap .erfo-search > .form-group,
+.erfo-wrap .erfo-search > .shiny-input-container{
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.erfo-wrap .erfo-search > .form-group,
+.erfo-wrap .erfo-search > .shiny-input-container{
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* --- Meest gezocht als kaartjes --- */
+.erfo-wrap .erfo-home-chips{
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+  gap: 16px !important;
+  margin-top: 12px !important;
+}
+
+.erfo-wrap .erfo-chip{
+  display: block !important;
+  padding: 16px 18px !important;
+  border-radius: 16px !important;
+
+  background: #ffffff !important;                   /* subtieler dan hero */
+  border: 1px solid rgba(31,41,55,0.08) !important; /* dun randje */
+  box-shadow: 0 6px 16px rgba(0,0,0,0.04) !important;
+
+  color: #0b2b33 !important;
+  text-decoration: none !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+}
+
+.erfo-wrap .erfo-chip:hover{
+  box-shadow: 0 10px 24px rgba(0,0,0,0.07) !important;
+  transform: translateY(-2px);
+}
+
+/* =====================================================
+   MEEST GEZOCHT – 2x2 TOPIC BLOKKEN (subtieler dan hero)
+   ===================================================== */
+
+.erfo-home-topic-grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+  margin-top: 18px;
+  margin-bottom: 10px;
+}
+
+/* Kaartjes (kleiner/subtieler dan Actueel/Uitgelicht) */
+.erfo-home-topic-card{
+  background: rgba(255,255,255,0.85);
+  border-radius: 18px;
+  padding: 18px 20px;
+
+  border: 1px solid rgba(31,41,55,0.08);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.04);
+
+  transition: transform .15s ease, box-shadow .15s ease;
+  cursor: pointer;
+}
+
+.erfo-home-topic-card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.07);
+}
+
+/* Titel in kaart */
+.erfo-home-topic-title{
+  margin-top: 12px;
+  font-size: 1.05rem;
+  font-weight: 750;
+  color: #0b2b33;
+  line-height: 1.25;
+}
+
+/* Mobiel: 1 kolom */
+@media (max-width: 780px){
+  .erfo-home-topic-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Meest gezocht titel centreren */
+.erfo-home-section h3{
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Extra ruimte onder Actueel / Uitgelicht */
+.erfo-home-hero{
+  margin-bottom: 48px; /* was waarschijnlijk ~24px */
+}
+
+/* Topbar layout verfijnen */
+.erfo-topbar{
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+}
+
+/* Zoekgroep centreren */
+.erfo-search{
+  justify-self: center;
+  max-width: 520px;
+  width: 100%;
+  display: flex;
+  gap: 12px;
+}
+
+/* Selectize laten voelen als zoekveld */
+.erfo-search .selectize-control.single .selectize-input:after{
+  display: none !important;
+}
+
+/* Zoekveld = input uitstraling */
+.erfo-search .selectize-input{
+  box-shadow: none;
+  background-image: none;
+  padding-right: 14px;
+}
+
+.erfo-search .selectize-input{
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%239CA3AF' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242.656a5 5 0 1 1 0-10 5 5 0 0 1 0 10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 12px center;
+  padding-left: 36px;
+}
+
+/* =========================================
+   FIX: Zoekveld + Zoek-knop naast elkaar
+   ========================================= */
+
+.erfo-wrap .erfo-search{
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  flex-wrap: nowrap !important;
+}
+
+/* Shiny/Bootstrap wrappers mogen niet full-width blocken */
+.erfo-wrap .erfo-search .form-group,
+.erfo-wrap .erfo-search .shiny-input-container{
+  margin: 0 !important;
+  width: auto !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+/* Selectize control moet flexibel zijn */
+.erfo-wrap .erfo-search .selectize-control{
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+/* Knop blijft vaste breedte */
+.erfo-wrap .erfo-search .btn-erfo-search{
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+}
+
+/* =========================================
+   Topbar: logo | zoeken (midden) | help
+   ========================================= */
+
+.erfo-wrap .erfo-topbar{
+  display: grid !important;
+  grid-template-columns: auto 1fr auto !important;
+  align-items: center !important;
+}
+
+.erfo-wrap .erfo-search{
+  justify-self: center !important;
+  max-width: 560px !important;
+  width: 100% !important;
+}
+
+/* =========================================
+   FIX: zoekbalk mag niet "instorten" na zoeken
+   ========================================= */
+
+.erfo-wrap .erfo-search{
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  flex-wrap: nowrap !important;
+}
+
+/* Belangrijk: het selectize blok moet groeien en niet krimpen */
+.erfo-wrap .erfo-search .selectize-control{
+  flex: 1 1 420px !important;   /* groeit, maar heeft basisbreedte */
+  min-width: 320px !important;  /* voorkomt mini-input */
+  width: 100% !important;
+}
+
+/* De daadwerkelijke input binnen selectize moet ook 100% breed zijn */
+.erfo-wrap .erfo-search .selectize-input{
+  width: 100% !important;
+}
+
+/* Knop blijft vaste breedte, zodat hij niet de ruimte steelt */
+.erfo-wrap .erfo-search .btn-erfo-search{
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+}
+
+/* Zoek-icoon RECHTS in de selectize input */
+.erfo-wrap .erfo-search .selectize-input{
+  position: relative;
+  background-repeat: no-repeat;
+  background-position: calc(100% - 14px) center; /* rechts */
+  padding-right: 38px !important;               /* ruimte voor icoon */
+  padding-left: 14px !important;                /* normale padding links */
+}
+
+/* Verberg het dropdown pijltje definitief */
+.erfo-wrap .erfo-search .selectize-control.single .selectize-input:after{
+  display: none !important;
+}
+
+/* Zoek-icoon RECHTS in de selectize input */
+.erfo-wrap .erfo-search .selectize-input{
+  position: relative;
+  background-repeat: no-repeat;
+  background-position: calc(100% - 14px) center; /* rechts */
+  padding-right: 38px !important;               /* ruimte voor icoon */
+  padding-left: 14px !important;                /* normale padding links */
+}
+
+/* Verberg het dropdown pijltje definitief */
+.erfo-wrap .erfo-search .selectize-control.single .selectize-input:after{
+  display: none !important;
+}
+
+.erfo-wrap .erfo-search{
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+}
+
+/* zoekveld groeit richting knop */
+.erfo-wrap .erfo-search .selectize-control{
+  flex: 1 1 auto !important;
+  min-width: 480px !important;
+  width: 100% !important;
+}
+
+.erfo-wrap .erfo-search .btn-erfo-search{
+  height: 44px;
+  border-radius: 22px;
+  padding: 0 18px;
+}
+
+/* Dambord-patroon voor Meest gezocht */
+.erfo-home-topic-card{
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+/* 1e rij */
+.erfo-home-topic-card:nth-child(1){
+  background: #f2faf5; /* licht groen */
+}
+.erfo-home-topic-card:nth-child(2){
+  background: #eaf6fb; /* licht blauw */
+}
+
+
+/* 2e rij (omgedraaid) */
+.erfo-home-topic-card:nth-child(3){
+  background: #eaf6fb; /* licht blauw */
+}
+.erfo-home-topic-card:nth-child(4){
+  background: #f2faf5; /* licht groen */
+}
+
+/* Hover (optioneel) */
+.erfo-home-topic-card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+}
+
+/* ===============================
+   Zoekbalk + knop: overlap fix
+   =============================== */
+
+/* Zoekzone moet altijd genoeg ruimte hebben */
+.erfo-search{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 520px;
+}
+
+/* Zoekveld mag groeien, maar niet over de knop heen */
+.erfo-search .selectize-control{
+  flex: 1 1 auto !important;
+  min-width: 420px;
+  max-width: calc(100% - 120px); /* ruimte voor zoekknop */
+}
+
+/* Zoekknop stabiel houden */
+.erfo-search .btn-erfo-search{
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* Zoekbalk iets naar links uitlijnen */
+.erfo-search .selectize-control{
+  margin-left: -18px; /* ~0,5 cm */
+}
+
+.erfo-wrap .erfo-search .selectize-input{
+  margin-left: -18px !important;
+}
+
+
+/* =========================================
+   HEADER / TOPBAR – extra groot
+   ========================================= */
+
+.erfo-topbar{
+  padding: 36px 44px !important;   /* duidelijk meer ruimte */
+  min-height: 120px;               /* echte header-hoogte */
+  border-radius: 26px;
+}
+
+/* Logo mag wat meer ademen */
+.erfo-logo{
+  margin-right: 20px;
+}
+
+/* Zoekveld groter & rustiger */
+.erfo-search .selectize-input{
+  height: 56px;
+  padding: 14px 18px;
+  font-size: 16px;
+}
+
+/* Zoekknop zelfde hoogte */
+.erfo-search .btn-erfo-search{
+  height: 56px;
+  padding: 0 24px;
+  font-size: 16px;
+}
+
+/* Mail-knop ook mee laten groeien */
+.erfo-topbar .btn-erfo-mail{
+  height: 56px;
+  padding: 0 26px;
+  font-size: 16px;
 }
