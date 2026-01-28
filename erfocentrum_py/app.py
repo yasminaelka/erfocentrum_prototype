@@ -56,6 +56,61 @@ HOME_TOPIC_BLOCKS = [
     },
 ]
 
+def pill_nav():
+    return ui.div(
+        {"class": "pillbar"},
+        ui.tags.ul(
+            {"class": "pillmenu"},
+            ui.tags.li(
+                {"class": "pill has-dd c1"},
+                ui.tags.a("Erfelijk of niet", {"href": "#", "class": "pillbtn"}),
+                ui.tags.ul(
+                    {"class": "dd"},
+                    ui.tags.li(ui.tags.a("Wat betekent erfelijk?", {"href": "#"})),
+                    ui.tags.li(ui.tags.a("Veelgestelde vragen", {"href": "#"})),
+                ),
+            ),
+            ui.tags.li(
+                {"class": "pill has-dd c2"},
+                ui.tags.a("DNA-onderzoek", {"href": "#", "class": "pillbtn"}),
+                ui.tags.ul(
+                    {"class": "dd"},
+                    ui.tags.li(ui.tags.a("Hoe werkt DNA-onderzoek?", {"href": "#"})),
+                    ui.tags.li(ui.tags.a("Uitslag en vervolg", {"href": "#"})),
+                ),
+            ),
+            ui.tags.li(
+                {"class": "pill has-dd c3"},
+                ui.tags.a("Ziekte(s) (en dan?)", {"href": "#", "class": "pillbtn"}),
+                ui.tags.ul(
+                    {"class": "dd"},
+                    ui.tags.li(ui.tags.a("Kanker", {"href": "#"})),
+                    ui.tags.li(ui.tags.a("Hart- en vaatziekten", {"href": "#"})),
+                ),
+            ),
+            ui.tags.li(
+                {"class": "pill has-dd c4"},
+                ui.tags.a("Kinderwens", {"href": "#", "class": "pillbtn"}),
+                ui.tags.ul(
+                    {"class": "dd"},
+                    ui.tags.li(ui.tags.a("Kinderwens & erfelijkheid", {"href": "#"})),
+                    ui.tags.li(ui.tags.a("PGT / IVF", {"href": "#"})),
+                ),
+            ),
+            ui.tags.li(
+                {"class": "pill has-dd c5"},
+                ui.tags.a("Familie of niet", {"href": "#", "class": "pillbtn"}),
+                ui.tags.ul(
+                    {"class": "dd"},
+                    ui.tags.li(ui.tags.a("Praten met familie", {"href": "#"})),
+                    ui.tags.li(ui.tags.a("Kinderen informeren", {"href": "#"})),
+                ),
+            ),
+        ),
+    )
+
+
+
 # -------------------------
 # Helpers
 # -------------------------
@@ -498,6 +553,9 @@ def server(input, output, session):
                     ),
                 ),
             ),
+            
+            pill_nav(), 
+            
             ui.output_ui("home_news_block"),
 
             # AI-knop verschijnt pas na zoeken
@@ -1050,44 +1108,6 @@ def server(input, output, session):
             return ui.HTML("")  # zodra er gezocht is: weg
 
         return ui.TagList(
-            # CATEGORIEËN als top-nav (zoals erfelijkheid.nl)
-            ui.div(
-                {"class": "erfo-home-cats"},
-                ui.div(
-                    {"class": "erfo-home-cats-inner"},
-                    ui.tags.a(
-                        "Erfelijk of niet",
-                        href="#",
-                        onclick="erfoSetInput('home_pick', 'erfelijk of niet'); return false;",
-                        class_="erfo-home-catlink",
-                    ),
-                    ui.tags.a(
-                        "DNA-onderzoek",
-                        href="#",
-                        onclick="erfoSetInput('home_pick', 'dna onderzoek'); return false;",
-                        class_="erfo-home-catlink",
-                    ),
-                    ui.tags.a(
-                        "Ziektes (en dan?)",
-                        href="#",
-                        onclick="erfoSetInput('home_pick', 'ziekte in familie'); return false;",
-                        class_="erfo-home-catlink",
-                    ),
-                    ui.tags.a(
-                        "Kinderwens",
-                        href="#",
-                        onclick="erfoSetInput('home_pick', 'kinderwens'); return false;",
-                        class_="erfo-home-catlink",
-                    ),
-                    ui.tags.a(
-                        "Familie of niet",
-                        href="#",
-                        onclick="erfoSetInput('home_pick', 'familie'); return false;",
-                        class_="erfo-home-catlink",
-                    ),
-                ),
-            ),
-            
             # HERO
             ui.div(
                 {"class": "erfo-home-hero"},
@@ -1162,6 +1182,7 @@ def server(input, output, session):
             size="l",
         )
         ui.modal_show(m)
+  
 
     @reactive.effect
     @reactive.event(input["start_ai_search"])
