@@ -1,5 +1,15 @@
+# RStudio / R
+.RData
 .Rhistory
-*.Rproj
-.venv/
-__pycache__/
-.DS_Store
+.Rproj.user/
+
+# Python
+**/__pycache__/
+*.pyc
+
+# Lokale backups/kopieën
+_backup_untracked/
+erfocentrum_py - kopie/
+
+# Deploy tooling (als dit lokaal is)
+erfocentrum_py/rsconnect-python/
